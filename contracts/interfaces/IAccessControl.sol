@@ -2,17 +2,10 @@
 pragma solidity ^0.8.0;
 
 interface IAccessControl {
-    event AdminAdded(address indexed admin);
-    event AdminRemoved(address indexed admin);
-    event OperatorAdded(address indexed operator);
-    event OperatorRemoved(address indexed operator);
+    event RoleGranted(bytes32 indexed role, address indexed account, address indexed sender);
+    event RoleRevoked(bytes32 indexed role, address indexed account, address indexed sender);
 
-    function addAdmin(address _admin) external;
-    function removeAdmin(address _admin) external;
-    function addOperator(address _operator) external;
-    function addOperators(address[] calldata _operators) external;
-    function removeOperator(address _operator) external;
-    function removeOperators(address[] calldata _operators) external;
-    function isAdmin(address _admin) external view returns (bool);
-    function isOperator(address _operator) external view returns (bool);
+    function hasRole(bytes32 role, address account) external view returns (bool);
+    function grantRole(bytes32 role, address account) external;
+    function revokeRole(bytes32 role, address account) external;
 }
