@@ -1,6 +1,6 @@
 # CoreVault Solidity Project
 
-![CoreVault Banner](./assets/banner.png)
+![banner](./assets/banner.png)
 
 ## Overview
 CoreVault is a Solidity-based smart contract system designed for decentralized token management, including staking, liquidity provision, and reward distribution. The main contract, `CoreVault.sol`, manages the token economy, while additional contracts provide extended functionalities.
