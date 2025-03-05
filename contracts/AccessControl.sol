@@ -1,27 +1,49 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import "./IAccessControl.sol";
+abstract contract AccessControl {
+    address public owner;
+    mapping(address => bool) private admins;
 
-contract AccessControl is IAccessControl {
-    mapping(bytes32 => mapping(address => bool)) private _roles;
-    
-    modifier onlyRole(bytes32 role) {
-        require(_roles[role][msg.sender], "AccessControl: sender does not have role");
+    event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);
+    event AdminAdded(address indexed admin);
+    event AdminRemoved(address indexed admin);
+
+    modifier onlyOwner() {
+        require(msg.sender == owner, "Not owner");
         _;
     }
 
-    function hasRole(bytes32 role, address account) external view override returns (bool) {
-        return _roles[role][account];
+    modifier onlyAdmin() {
+        require(admins[msg.sender] || msg.sender == owner, "Not admin");
+        _;
     }
 
-    function grantRole(bytes32 role, address account) external override onlyRole(keccak256("ADMIN")) {
-        _roles[role][account] = true;
-        emit RoleGranted(role, account, msg.sender);
+    constructor() {
+        owner = msg.sender;
+        emit OwnershipTransferred(address(0), msg.sender);
     }
 
-    function revokeRole(bytes32 role, address account) external override onlyRole(keccak256("ADMIN")) {
-        _roles[role][account] = false;
-        emit RoleRevoked(role, account, msg.sender);
+    function transferOwnership(address newOwner) external onlyOwner {
+        require(newOwner != address(0), "Invalid address");
+        emit OwnershipTransferred(owner, newOwner);
+        owner = newOwner;
+    }
+
+    function addAdmin(address admin) external onlyOwner {
+        require(admin != address(0), "Invalid address");
+        require(!admins[admin], "Already an admin");
+        admins[admin] = true;
+        emit AdminAdded(admin);
+    }
+
+    function removeAdmin(address admin) external onlyOwner {
+        require(admins[admin], "Not an admin");
+        admins[admin] = false;
+        emit AdminRemoved(admin);
+    }
+
+    function isAdmin(address account) external view returns (bool) {
+        return admins[account];
     }
 }
