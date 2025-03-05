@@ -31,6 +31,14 @@ CoreVault is a Solidity-based smart contract system designed for decentralized t
    - Allows users to add and remove liquidity
    - Stores liquidity contributions for future AMM integration
 
+### 7. **InsurancePool.sol**
+   - Provides a financial safety net for users through an insurance pool.
+   - Users can deposit tokens to receive coverage for a predefined period.
+   - Allows claims against covered events based on the user's risk level and deposit amount.
+   - Supports adjustments in coverage period and risk assessment by the contract owner.
+   - Ensures a minimum balance is maintained in the pool for operational liquidity.
+
+
 ## Installation & Usage
 ### Clone the repository
 ```sh
